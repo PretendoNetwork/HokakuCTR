@@ -1,0 +1,15 @@
+Author: PretendoNetwork
+
+Version: # Plugin version
+    Major: 1
+    Minor: 0
+    Revision: 0
+
+Targets: # Low TitleId of games which are compatibles with this plugin (empty for all)
+
+
+Title: Hokaku3DS
+
+Summary:  Dumps all RMC Packets in games using NEX for multiplayer
+
+Description:  Dumps all RMC Packets in games using NEX for multiplayer to pcap files.
