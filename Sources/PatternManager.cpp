@@ -55,7 +55,7 @@ namespace CTRPluginFramework {
                 }
                 else ///< Pattern not found
                 {
-                    return -1;
+                    break;
                 }
 
             } while (!pattern.isHandled && searchBegin < codeEnd);
@@ -86,8 +86,5 @@ namespace CTRPluginFramework {
         task2.Start();
 
         s32 res = task1.Wait() | task2.Wait();
-
-        if (res)
-            svcBreak(USERBREAK_USER);
     }
 }

@@ -2,3 +2,4 @@
 *.3gx
 .vscode
 *.code-workspace
+/gameCodeDump
