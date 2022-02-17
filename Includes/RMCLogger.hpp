@@ -4,7 +4,6 @@ namespace CTRPluginFramework {
     class RMCLogger
     {
     private:
-        static constexpr u32 maxPacketSize = 65535;
         struct PcapHeader {
             u32 magic;
             u16 versionMajor;
@@ -40,6 +39,8 @@ namespace CTRPluginFramework {
         void Initialize();
         void Terminate();
     public:
+        static constexpr u32 maxPacketSize = 65535;
+
         RMCLogger() {Initialize();};
         ~RMCLogger() {Terminate();};
 
