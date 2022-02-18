@@ -1,0 +1,27 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    container:
+      image: pablomk7/libctrpf:0.7.2
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Build Plugin
+      run: make
+      
+    - name: Upload Plugin
+      uses: actions/upload-artifact@v2
+      with:
+        name: Plugin 3GX File
+        path: HokakuCTR.3gx
