@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ununtu-latest
+    runs-on: ubuntu-latest
     
     container:
       image: pablomk7/libctrpf:0.7.2
