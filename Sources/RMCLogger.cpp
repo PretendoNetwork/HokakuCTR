@@ -16,13 +16,11 @@ namespace CTRPluginFramework {
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
         
-        startTime = osGetTime() - 2208988800000ULL;
+        startTime = time(NULL);
         currentElapsed.Restart();
         
-        // Standard functions to manage time seem to be broken currently, will be changed when they are fixed.
-        /*struct tm* timeStruct = gmtime((const time_t *)&startTime);
-        std::string session = Utils::Format("%04d%02d%02d_%02d%02d%02d.pcap", timeStruct->tm_year, timeStruct->tm_mon + 1, timeStruct->tm_mday, timeStruct->tm_hour, timeStruct->tm_min, timeStruct->tm_sec);*/
-        std::string session = Utils::Format("%llu.pcap", startTime);
+        struct tm* timeStruct = gmtime((const time_t *)&startTime);
+        std::string session = Utils::Format("%02d%02d%02d_%02d%02d%02d.pcap", timeStruct->tm_year % 100, timeStruct->tm_mon + 1, timeStruct->tm_mday, timeStruct->tm_hour, timeStruct->tm_min, timeStruct->tm_sec);
         
         pcapFile = new File(finalFolder + "/" + session, File::RWC);
 
