@@ -29,6 +29,13 @@ namespace CTRPluginFramework {
             u32 savedBytes;
             u32 packetBytes;
         };
+        struct PacketMetadata
+        {
+            struct {
+                u8 isRecievedPacked : 1;
+                u8 userPacketNote : 1;
+            } flags;
+        };
         
         File* pcapFile;
         Clock currentElapsed;
@@ -45,6 +52,6 @@ namespace CTRPluginFramework {
         ~RMCLogger() {Terminate();};
 
         
-        void LogRMCPacket(const u8* data, u32 packetSize);
+        void LogRMCPacket(const u8* data, u32 packetSize, bool isRecieved);
     };
 }

@@ -75,11 +75,11 @@ namespace CTRPluginFramework
         if (bufferVersion == NexBufferVersion::V0)
         {
             NexBufferv0* buf = (NexBufferv0*)buffer;
-            mainLogger->LogRMCPacket(buf->data, buf->size);
+            mainLogger->LogRMCPacket(buf->data, buf->size, false);
         } else if (bufferVersion == NexBufferVersion::V1)
         {
             NexBufferv1* buf = (NexBufferv1*)buffer;
-            mainLogger->LogRMCPacket(buf->data, buf->size);
+            mainLogger->LogRMCPacket(buf->data, buf->size, false);
         }
             
         return ((u32(*)(u32, u32, void*, u32))sendPacketHook.callCode)(arg0, arg1, buffer, arg2);
@@ -92,11 +92,11 @@ namespace CTRPluginFramework
         if (bufferVersion == NexBufferVersion::V0)
         {
             NexBufferv0* buf = (NexBufferv0*)buffer;
-            mainLogger->LogRMCPacket(buf->data, buf->size);
+            mainLogger->LogRMCPacket(buf->data, buf->size, true);
         } else if (bufferVersion == NexBufferVersion::V1)
         {
             NexBufferv1* buf = (NexBufferv1*)buffer;
-            mainLogger->LogRMCPacket(buf->data, buf->size);
+            mainLogger->LogRMCPacket(buf->data, buf->size, true);
         }
 
         return ((u32(*)(u32, void*, u32))recvPacketHook.callCode)(arg0, buffer, arg1);

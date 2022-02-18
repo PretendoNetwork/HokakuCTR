@@ -39,8 +39,8 @@ namespace CTRPluginFramework {
         writeBuffer = nullptr;
     }
 
-    void RMCLogger::LogRMCPacket(const u8* data, u32 packetSize) {
-        if (packetSize > maxPacketSize) {
+    void RMCLogger::LogRMCPacket(const u8* data, u32 packetSize, bool isRecieved) {
+        if (packetSize > maxPacketSize - sizeof(PacketMetadata)) {
             OSD::Notify(Utils::Format("Packet too big! 0x%08X, 0x%08X", (u32)data, packetSize));
         }
         PcapPacketHeader* pHdr = reinterpret_cast<PcapPacketHeader*>(writeBuffer);
@@ -52,7 +52,12 @@ namespace CTRPluginFramework {
 
         pHdr->timestamp = startTime + elapsedSec;
         pHdr->microsecondoffset = elapsedMsec;
-        memcpy(writeBuffer + sizeof(PcapPacketHeader), data, packetSize);
-        pcapFile->Write(writeBuffer, sizeof(PcapPacketHeader) + packetSize);
+
+        PacketMetadata metadata;
+        metadata.flags.isRecievedPacked = isRecieved;
+        memcpy(writeBuffer + sizeof(PcapPacketHeader), &metadata, sizeof(PacketMetadata));
+        
+        memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(PacketMetadata), data, packetSize);
+        pcapFile->Write(writeBuffer, sizeof(PcapPacketHeader) + sizeof(PacketMetadata) + packetSize);
     }
 }
