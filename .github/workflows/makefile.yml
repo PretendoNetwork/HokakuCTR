@@ -9,7 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: pablomk7/libctrpf:0.7.2
+    runs-on: ununtu-latest
+    
+    container:
+      image: pablomk7/libctrpf:0.7.2
 
     steps:
     - uses: actions/checkout@v2
