@@ -40,6 +40,8 @@ namespace CTRPluginFramework {
     }
 
     void RMCLogger::LogRMCPacket(const u8* data, u32 packetSize, bool isRecieved) {
+        if (packetSize < 4 || ((u32*)data)[0] != packetSize - 4)
+            return;
         if (packetSize > maxPacketSize - sizeof(PacketMetadata)) {
             OSD::Notify(Utils::Format("Packet too big! 0x%08X, 0x%08X", (u32)data, packetSize));
         }
