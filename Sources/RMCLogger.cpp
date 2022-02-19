@@ -44,7 +44,7 @@ namespace CTRPluginFramework {
             OSD::Notify(Utils::Format("Packet too big! 0x%08X, 0x%08X", (u32)data, packetSize));
         }
         PcapPacketHeader* pHdr = reinterpret_cast<PcapPacketHeader*>(writeBuffer);
-        pHdr->savedBytes = pHdr->packetBytes = packetSize;
+        pHdr->savedBytes = pHdr->packetBytes = packetSize + sizeof(PacketMetadata);
 
         s64 elapsedMsecTot = currentElapsed.GetElapsedTime().AsMicroseconds();
         u32 elapsedSec = elapsedMsecTot / 1000000;
