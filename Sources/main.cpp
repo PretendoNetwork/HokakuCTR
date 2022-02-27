@@ -171,7 +171,7 @@ namespace CTRPluginFramework
     {
         LightEvent_Init(&exitEvent, RESET_ONESHOT);
 
-        OSD::Notify("HokakuCTR v1.0");
+        OSD::Notify("HokakuCTR v1.0.1");
 
         if (sendFuncAddr) {
             OSD::Notify(Utils::Format("Send RMC Addr: 0x%08X", sendFuncAddr));
