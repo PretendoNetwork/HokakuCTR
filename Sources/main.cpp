@@ -18,7 +18,6 @@ namespace CTRPluginFramework
         V1 = 1
     };
 
-    LightEvent exitEvent;
     RT_HOOK sendPacketHook = { 0 };
     RT_HOOK recvPacketHook = { 0 };
     u32 sendFuncAddr = 0;
@@ -159,18 +158,9 @@ namespace CTRPluginFramework
         }
     }
 
-
-    // This function is called when the process exits
-    void    OnProcessExit(void)
-    {
-        LightEvent_Signal(&exitEvent);
-    }
-
     // This function is called after the game starts executing and CTRPF is ready.
     int     main(void)
     {
-        LightEvent_Init(&exitEvent, RESET_ONESHOT);
-
         OSD::Notify("HokakuCTR v1.0");
 
         if (sendFuncAddr) {
@@ -187,8 +177,8 @@ namespace CTRPluginFramework
 
         OSD::Notify((sendFuncAddr && recvFuncAddr) ? "Ready!" : "Not Ready!");
 
-        // Wait for process exit event.
-        LightEvent_Wait(&exitEvent);
+        // Wait for process exit.
+        Process::WaitForExit();
 
         rtDisableHook(&sendPacketHook);
         rtDisableHook(&recvPacketHook);
