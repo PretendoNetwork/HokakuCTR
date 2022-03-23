@@ -161,7 +161,7 @@ namespace CTRPluginFramework
     // This function is called after the game starts executing and CTRPF is ready.
     int     main(void)
     {
-        OSD::Notify("HokakuCTR v1.0");
+        OSD::Notify("HokakuCTR v1.0.1");
 
         if (sendFuncAddr) {
             OSD::Notify(Utils::Format("Send RMC Addr: 0x%08X", sendFuncAddr));
