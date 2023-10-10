@@ -12,6 +12,8 @@ namespace CTRPluginFramework {
         std::string procName;
         Process::GetName(procName);
 
+		titleID = Process::GetTitleID();
+
         finalFolder += "/" + procName + " - (" + tid + ")";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
@@ -42,11 +44,11 @@ namespace CTRPluginFramework {
     void RMCLogger::LogRMCPacket(const u8* data, u32 packetSize, bool isRecieved) {
         if (packetSize < 4 || ((u32*)data)[0] != packetSize - 4)
             return;
-        if (packetSize > maxPacketSize - sizeof(PacketMetadata)) {
+        if (packetSize > maxPacketSize - sizeof(PacketMetadata) - sizeof(titleID)) {
             OSD::Notify(Utils::Format("Packet too big! 0x%08X, 0x%08X", (u32)data, packetSize));
         }
         PcapPacketHeader* pHdr = reinterpret_cast<PcapPacketHeader*>(writeBuffer);
-        pHdr->savedBytes = pHdr->packetBytes = packetSize + sizeof(PacketMetadata);
+        pHdr->savedBytes = pHdr->packetBytes = packetSize + sizeof(PacketMetadata) + sizeof(titleID);
 
         s64 elapsedMsecTot = currentElapsed.GetElapsedTime().AsMicroseconds();
         u32 elapsedSec = elapsedMsecTot / 1000000;
@@ -57,9 +59,11 @@ namespace CTRPluginFramework {
 
         PacketMetadata metadata;
         metadata.flags.isRecievedPacked = isRecieved;
-        memcpy(writeBuffer + sizeof(PcapPacketHeader), &metadata, sizeof(PacketMetadata));
-        
-        memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(PacketMetadata), data, packetSize);
-        pcapFile->Write(writeBuffer, sizeof(PcapPacketHeader) + sizeof(PacketMetadata) + packetSize);
+
+        memcpy(writeBuffer + sizeof(PcapPacketHeader), &titleID, sizeof(titleID));
+        memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(titleID), &metadata, sizeof(PacketMetadata));
+        memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(titleID) + sizeof(PacketMetadata), data, packetSize);
+
+        pcapFile->Write(writeBuffer, sizeof(PcapPacketHeader) + sizeof(titleID) + sizeof(PacketMetadata) + packetSize);
     }
 }

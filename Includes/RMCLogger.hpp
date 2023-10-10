@@ -36,7 +36,7 @@ namespace CTRPluginFramework {
                 u8 userPacketNote : 1;
             } flags;
         };
-        
+        u64 titleID;
         File* pcapFile;
         Clock currentElapsed;
         time_t startTime;
