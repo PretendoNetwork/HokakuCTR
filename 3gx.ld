@@ -19,7 +19,7 @@ SECTIONS
 
 	.text ALIGN(4) :
 	{
-		/* .init */		
+		/* .init */
 		KEEP( *(.crt0) )
 		KEEP( *(.init) )
 		. = ALIGN(4);
@@ -38,6 +38,7 @@ SECTIONS
 		KEEP( *(.fini) )
 		. = ALIGN(4);
 	} : code
+	__text_end__ = .;
 
 	/* =========== RODATA section =========== */
 
@@ -47,8 +48,11 @@ SECTIONS
 		*(.roda)
 		*(.rodata.*)
 		*all.rodata*(*)
-		*(.gnu.linkonce.r*)	
+		*(.gnu.linkonce.r*)
 		SORT(CONSTRUCTORS)
+		. = ALIGN(4);
+		__tdata_align = .;
+		LONG (ALIGNOF(.tdata));
 		. = ALIGN(4);
 	} : rodata
 
@@ -60,15 +64,15 @@ SECTIONS
 	/* =========== DATA section =========== */
 
 	.data ALIGN(4):
-	{ 
+	{
 		*(.data)
 		*(.data.*)
 		*(.gnu.linkonce.d*)
 		CONSTRUCTORS
 		. = ALIGN(4);
 	} : data
-	
-	.tdata ALIGN(4) :
+
+	.tdata : ALIGN(4)
 	{
 		__tdata_lma = .;
 		*(.tdata)
@@ -78,7 +82,7 @@ SECTIONS
 		__tdata_lma_end = .;
 	} : data
 
-	.tbss ALIGN(4) :
+	.tbss : ALIGN(4)
 	{
 		*(.tbss)
 		*(.tbss.*)
@@ -122,10 +126,10 @@ SECTIONS
 	{
 		KEEP (*crtbegin.o(.dtors))
 		KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
-		KEEP (*(SORT(.dtors.*)))	
+		KEEP (*(SORT(.dtors.*)))
 		KEEP (*(.dtors))
 	} : data
-	
+
 	__bss_start__ = .;
 	.bss ALIGN(4) :
 	{
@@ -134,15 +138,25 @@ SECTIONS
 		*(.bss.*)
 		*(.gnu.linkonce.b*)
 		*(COMMON)
-		. = ALIGN(4);
 
-		/* Reserve space for the TLS segment of the main thread */
+		/* Reserve space for the TLS segment of the main thread.
+		   We need (__tls_start - 8) to be aligned the same as .tdata, to account for
+		   the 8-byte ARM TLS header. Since the header is not actually used for
+		   ARM_TLS_LE32 relocation, we just fake it by subtracting 8 from the data
+		   offset.
+		 */
+		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), ALIGNOF(.tdata)));
 		__tls_start = .;
-		. += + SIZEOF(.tdata) + SIZEOF(.tbss);
+		. += SIZEOF(.tdata);
+		/* Ensure the alignment of .tbss is accounted for in the total size,
+           since SIZEOF(.tdata) doesn't include any padding before .tbss.
+         */
+		. = ALIGN(ALIGNOF(.tbss));
+        . += SIZEOF(.tbss);
 		__tls_end = .;
 	} : data
 	__bss_end__ = .;
-	
+
 	__end__ = ABSOLUTE(.) ;
 
 	/* ==================
