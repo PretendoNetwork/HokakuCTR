@@ -12,7 +12,7 @@ namespace CTRPluginFramework {
         std::string procName;
         Process::GetName(procName);
 
-		titleID = Process::GetTitleID();
+        titleID = Process::GetTitleID();
 
         finalFolder += "/" + procName + " - (" + tid + ")";
         if (!Directory::IsExists(finalFolder))
