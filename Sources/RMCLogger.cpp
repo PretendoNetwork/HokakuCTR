@@ -29,7 +29,7 @@ namespace CTRPluginFramework {
         PcapHeader hdr;
         pcapFile->Write(&hdr, sizeof(PcapHeader));
 
-        writeBuffer = (u8*)operator new(maxPacketSize + sizeof(PcapPacketHeader));
+        writeBuffer = (u8*)operator new(maxPacketSize + sizeof(PcapPacketHeader) + sizeof(titleID));
     }
 
     void RMCLogger::Terminate() {
