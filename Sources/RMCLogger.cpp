@@ -12,6 +12,8 @@ namespace CTRPluginFramework {
         std::string procName;
         Process::GetName(procName);
 
+        titleID = Process::GetTitleID();
+
         finalFolder += "/" + procName + " - (" + tid + ")";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
@@ -56,7 +58,8 @@ namespace CTRPluginFramework {
         pHdr->microsecondoffset = elapsedMsec;
 
         PacketMetadata metadata;
-        metadata.flags.isRecievedPacked = isRecieved;
+        metadata.titleID = titleID;
+        metadata.flags.isRecievedPacket = isRecieved;
         memcpy(writeBuffer + sizeof(PcapPacketHeader), &metadata, sizeof(PacketMetadata));
         
         memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(PacketMetadata), data, packetSize);

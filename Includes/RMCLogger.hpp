@@ -29,14 +29,17 @@ namespace CTRPluginFramework {
             u32 savedBytes;
             u32 packetBytes;
         };
-        struct PacketMetadata
+        struct PACKED PacketMetadata
         {
+            u8 revision = 1;
+            u64 titleID{};
             struct {
-                u8 isRecievedPacked : 1;
+                u8 isRecievedPacket : 1;
                 u8 userPacketNote : 1;
-            } flags;
+                u8 unused : 6;
+            } flags{};
         };
-        
+        u64 titleID;
         File* pcapFile;
         Clock currentElapsed;
         time_t startTime;
