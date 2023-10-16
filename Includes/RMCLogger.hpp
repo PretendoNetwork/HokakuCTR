@@ -31,8 +31,12 @@ namespace CTRPluginFramework {
         };
         struct PACKED PacketMetadata
         {
-            u64 titleID;
-            bool isRecievedPacket;
+            u64 titleID{};
+            struct {
+                u8 isRecievedPacket : 1;
+                u8 userPacketNote : 1;
+                u8 unused : 6;
+            } flags{};
         };
         u64 titleID;
         File* pcapFile;
