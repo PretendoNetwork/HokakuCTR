@@ -31,6 +31,7 @@ namespace CTRPluginFramework {
         };
         struct PACKED PacketMetadata
         {
+            u8 revision = 1;
             u64 titleID{};
             struct {
                 u8 isRecievedPacket : 1;
