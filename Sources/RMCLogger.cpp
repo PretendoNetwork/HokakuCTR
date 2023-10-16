@@ -59,7 +59,7 @@ namespace CTRPluginFramework {
 
         PacketMetadata metadata;
         metadata.titleID = titleID;
-        metadata.flags.isRecievedPacked = isRecieved;
+        metadata.isRecievedPacket = isRecieved;
         memcpy(writeBuffer + sizeof(PcapPacketHeader), &metadata, sizeof(PacketMetadata));
         
         memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(PacketMetadata), data, packetSize);
