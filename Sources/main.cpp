@@ -177,6 +177,9 @@ namespace CTRPluginFramework
 
         OSD::Notify((sendFuncAddr && recvFuncAddr) ? "Ready!" : "Not Ready!");
 
+        OSD::Notify("This is a hacky fork made for use with Sonic Generations ONLY!");
+        OSD::Notify("Make sure you've read the README on GitHub before using this!");
+
         // Wait for process exit.
         Process::WaitForExit();
 
