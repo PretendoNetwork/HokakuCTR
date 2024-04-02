@@ -1,13 +1,3 @@
-# Note
-
-This is a hacky fork of HokakuCTR made to get packet dumps from Sonic Generations on the 3DS.  Credit goes to Pretendo for originally creating this program.
-Main things of note are as follows:
-
-1. All dumps will be saved at /HokakuCTR/SonicGen - (Title ID)/
-2. All dumps are named "dump.pcap".  You will need to rename the dump for each dump you do so they don't get overridden.  I recommend installing 3DShell to speed this process up.
-3. Due to this being a hacky workaround, once you close Sonic Generations and open another app, the 3DS will crash (at least in my testing anyway).  I recommend opening the Rosalina menu, disabling the plugin, then selecting "Reboot" to get around this.
-4. Use this for Sonic Generations only.  You could technically use this for other games, but I wouldn't recommend it.
-
 # HokakuCTR 
 
 A 3DS game plugin (3GX) to dump the RMC communication between 3DS games and NEX. The traffic is dumped to the SD into **pcap** files.

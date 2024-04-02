@@ -3,14 +3,17 @@
 
 namespace CTRPluginFramework {
     void RMCLogger::Initialize() {
-        std::string finalFolder = "/HokakuCTR";
+      std::string finalFolder = "/HokakuCTR";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
 
         std::string tid;
         Process::GetTitleID(tid);
-        std::string procName = "SonicGen";
-        //Process::GetName(procName);
+        std::string procName;
+        Process::GetName(procName);
+        if (procName == "") {
+          procName = "NULL";
+        }
 
         titleID = Process::GetTitleID();
 
@@ -24,7 +27,7 @@ namespace CTRPluginFramework {
         struct tm* timeStruct = gmtime((const time_t *)&startTime);
         std::string session = Utils::Format("%02d%02d%02d_%02d%02d%02d.pcap", timeStruct->tm_year % 100, timeStruct->tm_mon + 1, timeStruct->tm_mday, timeStruct->tm_hour, timeStruct->tm_min, timeStruct->tm_sec);
         
-        pcapFile = new File(finalFolder + "/dump.pcap", File::RWC);
+        pcapFile = new File(finalFolder + "/" + session, File::RWC);
 
         PcapHeader hdr;
         pcapFile->Write(&hdr, sizeof(PcapHeader));
@@ -64,16 +67,5 @@ namespace CTRPluginFramework {
         
         memcpy(writeBuffer + sizeof(PcapPacketHeader) + sizeof(PacketMetadata), data, packetSize);
         pcapFile->Write(writeBuffer, sizeof(PcapPacketHeader) + sizeof(PacketMetadata) + packetSize);
-        // As far as I know, this *should* give the same results as when the plugin
-        // de-inits properly.  This hack unfortunately does result in the file never getting
-        // unlocked after dumping is done, causing a crash when opening another application.
-        pcapFile->Flush();
-        pcapFile->Close();
-        std::string tid;
-        Process::GetTitleID(tid);
-        
-        // I could probably do this a lot cleaner, but given this is only a temporary hack for
-        // a singular game that'll only be needed for one week, I probably won't bother
-        pcapFile = new File("/HokakuCTR/SonicGen - (" + tid + ")" + "/dump.pcap", File::READ | File::WRITE | File::APPEND);
     }
 }
