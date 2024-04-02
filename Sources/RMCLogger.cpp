@@ -3,6 +3,19 @@
 
 namespace CTRPluginFramework {
     void RMCLogger::Initialize() {
+                std::map<std::string, std::string> gameNames = {
+            {"CENTER", "badge-arcade"},
+            {"ctrapp", "super-smash-bros3ds"},
+            {"kujira-1", "PokemonX"},
+            {"MarioKar", "mario-kart7"},
+            {"TAKUMI", "animal-crossing-happyHD"},
+            {"Kirby3DS", "Team-kirby-clash-deluxe"},
+            {"GARDEN", "animal-crossing-new-leaf"},
+            {"momiji", "pokemon-ultra-soleil"},
+            {"Rabbids", "rabbids-rumble"},
+            {"uniform", "mario-superstars"}
+        };
+
         std::string finalFolder = "/HokakuCTR";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
@@ -17,9 +30,18 @@ namespace CTRPluginFramework {
 
         titleID = Process::GetTitleID();
 
+        // Rechercher si le nom de processus commence par l'un des termes de la liste
+        for (const auto& gameName : gameNames) {
+            if (procName.find(gameName.first) == 0) {
+                procName.replace(0, gameName.first.length(), gameName.second);
+                break;
+            }
+        }
+
         finalFolder += "/" + procName + " - (" + tid + ")";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
+
         
         startTime = time(NULL);
         currentElapsed.Restart();
