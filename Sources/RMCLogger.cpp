@@ -3,7 +3,7 @@
 
 namespace CTRPluginFramework {
     void RMCLogger::Initialize() {
-      std::string finalFolder = "/HokakuCTR";
+        std::string finalFolder = "/HokakuCTR";
         if (!Directory::IsExists(finalFolder))
             Directory::Create(finalFolder);
 
@@ -11,9 +11,9 @@ namespace CTRPluginFramework {
         Process::GetTitleID(tid);
         std::string procName;
         Process::GetName(procName);
-        if (procName == "") {
-          procName = "NULL";
-        }
+		if (procName == "") {
+			procName = "NULL";
+		}
 
         titleID = Process::GetTitleID();
 
