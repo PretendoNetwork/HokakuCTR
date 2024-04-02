@@ -11,9 +11,9 @@ namespace CTRPluginFramework {
         Process::GetTitleID(tid);
         std::string procName;
         Process::GetName(procName);
-		if (procName == "") {
-			procName = "NULL";
-		}
+	if (procName == "") {
+	    procName = "NULL";
+	}
 
         titleID = Process::GetTitleID();
 
